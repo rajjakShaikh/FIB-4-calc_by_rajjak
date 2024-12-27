@@ -140,7 +140,7 @@ const FibCalculator = () => {
                 value={formData.age}
                 onChange={handleInputChange}
                 placeholder="Age"
-                className="w-16 !font-[16px] p-1  border rounded text-center"
+                className="w-10 md:w-16 text-[13px] md:text-[16px] p-1  border rounded text-center"
               />
               <span>×</span>
               <input
@@ -149,7 +149,7 @@ const FibCalculator = () => {
                 value={formData.ast}
                 onChange={handleInputChange}
                 placeholder="AST"
-                className="w-16 p-1 border rounded text-center"
+                className="w-10 md:w-16 p-1 text-[13px] md:text-[16px] border rounded text-center"
               />
             </div>
           </div>
@@ -162,7 +162,7 @@ const FibCalculator = () => {
                 value={formData.platelets}
                 onChange={handleInputChange}
                 placeholder="PLT"
-                className="w-20 font-sm p-1 border rounded text-center"
+                className="w-10 md:w-16 text-[13px] md:text-[16px] p-1 border rounded text-center"
               />
               <span>×</span>
               <span>√</span>
@@ -172,7 +172,7 @@ const FibCalculator = () => {
                 value={formData.alt}
                 onChange={handleInputChange}
                 placeholder="ALT"
-                className="w-16 p-1 border rounded text-center"
+                className="w-12 md:w-16 p-1 text-[13px] md:text-[16px] border rounded text-center"
               />
             </div>
           </div>
@@ -210,7 +210,7 @@ const FibCalculator = () => {
           </div>
 
           {/* Risk Categories */}
-          <div className="grid grid-cols-3 gap-4 mt-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 sm:grid-cols-1 gap-4 mt-6">
             <div className="p-4 rounded-xl bg-gradient-to-br from-green-50 to-white border border-green-100">
               <p className="text-green-800 font-medium">{"<"} 1.3</p>
               <p className="text-sm text-green-600">Low Risk</p>
