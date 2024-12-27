@@ -1,101 +1,238 @@
-import Image from "next/image";
+"use client";
+import { useRef, useState } from "react";
 
-export default function Home() {
+const FibCalculator = () => {
+  const [formData, setFormData] = useState({
+    age: "",
+    ast: "",
+    alt: "",
+    platelets: "",
+  });
+  const [result, setResult] = useState(null);
+  const [riskCategory, setRiskCategory] = useState("");
+  const useAgeRef = useRef("");
+  const useastRef = useRef("");
+  const usealtRef = useRef("");
+  const useplateletsRef = useRef("");
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const calculateFibScore = () => {
+    const { age, ast, alt, platelets } = formData;
+
+    // Convert inputs to numbers and validate
+    const ageNum = parseFloat(age);
+    const astNum = parseFloat(ast);
+    const altNum = parseFloat(alt);
+    const plateletsNum = parseFloat(platelets);
+
+    // Validate inputs
+    if (!ageNum || !astNum || !altNum || !plateletsNum) {
+      alert("Please fill in all values");
+      return;
+    }
+
+    // Correct FIB-4 formula: (Age × AST) / (Platelets × √ALT)
+    const fib4 = (ageNum * astNum) / (plateletsNum * Math.sqrt(altNum));
+
+    let category = "";
+    if (fib4 < 1.3) {
+      category = "Low Risk";
+    } else if (fib4 <= 2.67) {
+      category = "Indeterminate Risk";
+    } else {
+      category = "High Risk";
+    }
+
+    setResult(fib4.toFixed(2));
+    setRiskCategory(category);
+  };
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.js
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <div className="max-w-2xl mx-auto p-6 bg-white shadow-lg rounded-xl">
+      <h1 className="text-3xl font-bold text-center mb-6 text-gray-800">
+        Fibrosis-4 (FIB-4) Calculator
+      </h1>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+      <div className="mb-8 p-4 bg-gradient-to-br from-blue-50 to-gray-50 rounded-xl border border-gray-100">
+        <p className="text-lg font-semibold mb-3 text-gray-700">
+          Input Parameters:
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div className="flex items-center gap-3">
+            <div className="w-32">
+              <span className="text-sm font-medium text-gray-600">
+                Age (years)
+              </span>
+            </div>
+            <input
+              type="number"
+              name="age"
+              value={formData.age}
+              onChange={handleInputChange}
+              ref={useAgeRef}
+              placeholder="Age"
+              className="flex-1 p-2  border border-gray-400 rounded-lg focus:ring-2 focus:ring-blue-300 focus:border-blue-500 transition-all"
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="w-32">
+              <span className="text-sm font-medium text-gray-600">
+                AST (IU/L)
+              </span>
+            </div>
+            <input
+              type="number"
+              name="ast"
+              value={formData.ast}
+              onChange={handleInputChange}
+              ref={useastRef}
+              placeholder="AST"
+              className="flex-1 p-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-blue-300 focus:border-blue-500 transition-all"
+            />
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="w-32">
+              <span className="text-sm font-medium text-gray-600">
+                ALT (IU/L)
+              </span>
+            </div>
+            <input
+              type="number"
+              name="alt"
+              value={formData.alt}
+              ref={usealtRef}
+              onChange={handleInputChange}
+              placeholder="ALT"
+              className="!flex-1 p-2 border border-gray-400  rounded-lg focus:ring-2 focus:ring-blue-300 focus:border-blue-500 transition-all"
+            />
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="w-32">
+              <span className="text-sm font-medium text-gray-600">
+                PLT (10⁹/L)
+              </span>
+            </div>
+            <input
+              type="number"
+              name="platelets"
+              value={formData.platelets}
+              ref={useplateletsRef}
+              onChange={handleInputChange}
+              placeholder="Platelets"
+              className="flex-1 p-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-blue-300 focus:border-blue-500 transition-all"
+            />
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+        <div className="text-center text-lg font-medium text-gray-700 mb-4">
+          Formula Visualization
+        </div>
+        <div className="flex items-center justify-center text-xl bg-white p-4 rounded-lg shadow-sm">
+          <div className="border-b-2 border-black text-center">
+            <div className="flex items-center gap-2">
+              <input
+                type="number"
+                name="age"
+                value={formData.age}
+                onChange={handleInputChange}
+                placeholder="Age"
+                className="w-16 !font-[16px] p-1  border rounded text-center"
+              />
+              <span>×</span>
+              <input
+                type="number"
+                name="ast"
+                value={formData.ast}
+                onChange={handleInputChange}
+                placeholder="AST"
+                className="w-16 p-1 border rounded text-center"
+              />
+            </div>
+          </div>
+          <div className="mx-2">/</div>
+          <div className="border-b-2 border-black text-center">
+            <div className="flex items-center gap-2">
+              <input
+                type="number"
+                name="platelets"
+                value={formData.platelets}
+                onChange={handleInputChange}
+                placeholder="PLT"
+                className="w-20 font-sm p-1 border rounded text-center"
+              />
+              <span>×</span>
+              <span>√</span>
+              <input
+                type="number"
+                name="alt"
+                value={formData.alt}
+                onChange={handleInputChange}
+                placeholder="ALT"
+                className="w-16 p-1 border rounded text-center"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button
+        onClick={calculateFibScore}
+        className="mt-6 w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-3 px-6 rounded-lg 
+        hover:from-blue-600 hover:to-blue-700 transform hover:scale-[1.02] transition-all duration-200 
+        font-medium shadow-md"
+      >
+        Calculate FIB-4 Score
+      </button>
+
+      {result && (
+        <div className="mt-10 space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-gradient-to-br from-indigo-50 to-white p-6 rounded-xl border border-indigo-100">
+              <p className="text-sm text-indigo-600 mb-2">FIB-4 Score</p>
+              <p className="text-3xl font-bold text-gray-800">{result}</p>
+            </div>
+            <div
+              className={`p-6 rounded-xl border ${
+                riskCategory === "Low Risk"
+                  ? "bg-gradient-to-br from-green-50 to-white border-green-100"
+                  : riskCategory === "High Risk"
+                  ? "bg-gradient-to-br from-red-50 to-white border-red-100"
+                  : "bg-gradient-to-br from-yellow-50 to-white border-yellow-100"
+              }`}
+            >
+              <p className="text-sm text-gray-600 mb-2">Risk Category</p>
+              <p className="text-3xl font-bold">{riskCategory}</p>
+            </div>
+          </div>
+
+          {/* Risk Categories */}
+          <div className="grid grid-cols-3 gap-4 mt-6">
+            <div className="p-4 rounded-xl bg-gradient-to-br from-green-50 to-white border border-green-100">
+              <p className="text-green-800 font-medium">{"<"} 1.3</p>
+              <p className="text-sm text-green-600">Low Risk</p>
+            </div>
+            <div className="p-4 rounded-xl bg-gradient-to-br from-yellow-50 to-white border border-yellow-100">
+              <p className="text-yellow-800 font-medium">1.3 - 2.67</p>
+              <p className="text-sm text-yellow-600">Indeterminate</p>
+            </div>
+            <div className="p-4 rounded-xl bg-gradient-to-br from-red-50 to-white border border-red-100">
+              <p className="text-red-800 font-medium">{">"} 2.67</p>
+              <p className="text-sm text-red-600">High Risk</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <p className="mt-6 text-sm text-gray-500 text-center italic">
+        This calculator is designed to assist healthcare professionals and
+        should not replace clinical judgment.
+      </p>
     </div>
   );
-}
+};
+
+export default FibCalculator;
