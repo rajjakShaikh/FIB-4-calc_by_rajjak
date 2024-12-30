@@ -252,8 +252,8 @@ const FibCalculator = () => {
       )}
 
       <p className="mt-6 text-sm text-gray-500 text-center italic">
-        This calculator is designed to assist healthcare professionals and
-        should not replace clinical judgment.
+        This tool is intended to assist healthcare professionals and is not a
+        substitute for clinical judgment.
       </p>
     </div>
   );
