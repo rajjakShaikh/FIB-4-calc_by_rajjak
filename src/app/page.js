@@ -209,6 +209,30 @@ const FibCalculator = () => {
             </div>
           </div>
 
+          <div className="bg-white p-4 rounded-xl border text-center border-gray-100 shadow-md">
+            {riskCategory === "High Risk" && (
+              <div className="flex items-center space-x-3 text-red-500 font-bold  animate-pulse">
+                <p className="text-md text-center font-bold">
+                  This FIB-4 score is categorized as high risk*
+                </p>
+              </div>
+            )}
+            {riskCategory === "Low Risk" && (
+              <div className="flex items-center space-x-3 text-green-700  animate-pulse">
+                <p className="text-md text-center font-bold">
+                  This FIB-4 score is categorized as low risk*
+                </p>
+              </div>
+            )}
+            {riskCategory === "Indeterminate Risk" && (
+              <div className="flex items-center space-x-3 text-yellow-500  animate-pulse">
+                <p className="text-md text-center font-bold">
+                  This FIB-4 score is categorized as indeterminate risk*
+                </p>
+              </div>
+            )}
+          </div>
+
           {/* Risk Categories */}
           <div className="grid grid-cols-1 md:grid-cols-3 sm:grid-cols-1 gap-4 mt-6">
             <div className="p-4 rounded-xl bg-gradient-to-br from-green-50 to-white border border-green-100">
