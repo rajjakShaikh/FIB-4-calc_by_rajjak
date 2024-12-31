@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const FibCalculator = () => {
   const [formData, setFormData] = useState({
@@ -11,9 +11,15 @@ const FibCalculator = () => {
   const [result, setResult] = useState(null);
   const [riskCategory, setRiskCategory] = useState("");
   const useAgeRef = useRef("");
-  const useastRef = useRef("");
-  const usealtRef = useRef("");
-  const useplateletsRef = useRef("");
+  const useASTRef = useRef("");
+  const useALTRef = useRef("");
+  const usePlateletsRef = useRef("");
+
+  useEffect(() => {
+    useAgeRef.current.focus();
+    useASTRef.current.valueOf = "";
+    usePlateletsRef.current.valueOf = "";
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -37,6 +43,7 @@ const FibCalculator = () => {
 
     // Correct FIB-4 formula: (Age × AST) / (Platelets × √ALT)
     const fib4 = (ageNum * astNum) / (plateletsNum * Math.sqrt(altNum));
+    //fib4=23*0.3234/2*
 
     let category = "";
     if (fib4 < 1.3) {
@@ -54,7 +61,7 @@ const FibCalculator = () => {
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white shadow-lg rounded-xl">
       <h1 className="text-3xl font-bold text-center mb-6 text-gray-800">
-        Fibrosis-4 (FIB-4) Calculator
+        FIB-4 Score and Liver Fibrosis
       </h1>
 
       <div className="mb-8 p-4 bg-gradient-to-br from-blue-50 to-gray-50 rounded-xl border border-gray-100">
@@ -89,7 +96,7 @@ const FibCalculator = () => {
               name="ast"
               value={formData.ast}
               onChange={handleInputChange}
-              ref={useastRef}
+              ref={useASTRef}
               placeholder="AST"
               className="flex-1 p-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-blue-300 focus:border-blue-500 transition-all"
             />
@@ -104,7 +111,7 @@ const FibCalculator = () => {
               type="number"
               name="alt"
               value={formData.alt}
-              ref={usealtRef}
+              ref={useALTRef}
               onChange={handleInputChange}
               placeholder="ALT"
               className="!flex-1 p-2 border border-gray-400  rounded-lg focus:ring-2 focus:ring-blue-300 focus:border-blue-500 transition-all"
@@ -120,7 +127,7 @@ const FibCalculator = () => {
               type="number"
               name="platelets"
               value={formData.platelets}
-              ref={useplateletsRef}
+              ref={usePlateletsRef}
               onChange={handleInputChange}
               placeholder="Platelets"
               className="flex-1 p-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-blue-300 focus:border-blue-500 transition-all"
