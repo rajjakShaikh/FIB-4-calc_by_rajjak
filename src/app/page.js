@@ -43,7 +43,6 @@ const FibCalculator = () => {
 
     // Correct FIB-4 formula: (Age × AST) / (Platelets × √ALT)
     const fib4 = (ageNum * astNum) / (plateletsNum * Math.sqrt(altNum));
-    //fib4=23*0.3234/2*
 
     let category = "";
     if (fib4 < 1.3) {
@@ -53,19 +52,18 @@ const FibCalculator = () => {
     } else {
       category = "High Risk";
     }
-
     setResult(fib4.toFixed(2));
     setRiskCategory(category);
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-white shadow-lg rounded-xl">
-      <h1 className="text-3xl font-bold text-center mb-6 text-gray-800">
+    <div className="max-w-2xl mx-auto p-6 my-5 shadow-lg  bg-white border border-[#7CCC52] rounded-xl">
+      <h1 className="text-3xl font-bold text-center mb-6 text-[#1A3394]">
         FIB-4 Score and Liver Fibrosis
       </h1>
 
       <div className="mb-8 p-4 bg-gradient-to-br from-blue-50 to-gray-50 rounded-xl border border-gray-100">
-        <p className="text-lg font-semibold mb-3 text-gray-700">
+        <p className="text-lg font-normal mb-3 text-[#1A3394]">
           Input Parameters:
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -101,22 +99,7 @@ const FibCalculator = () => {
               className="flex-1 p-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-blue-300 focus:border-blue-500 transition-all"
             />
           </div>
-          <div className="flex items-center gap-3">
-            <div className="w-32">
-              <span className="text-sm font-medium text-gray-600">
-                ALT (IU/L)
-              </span>
-            </div>
-            <input
-              type="number"
-              name="alt"
-              value={formData.alt}
-              ref={useALTRef}
-              onChange={handleInputChange}
-              placeholder="ALT"
-              className="!flex-1 p-2 border border-gray-400  rounded-lg focus:ring-2 focus:ring-blue-300 focus:border-blue-500 transition-all"
-            />
-          </div>
+
           <div className="flex items-center gap-3">
             <div className="w-32">
               <span className="text-sm font-medium text-gray-600">
@@ -133,9 +116,25 @@ const FibCalculator = () => {
               className="flex-1 p-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-blue-300 focus:border-blue-500 transition-all"
             />
           </div>
+          <div className="flex items-center gap-3">
+            <div className="w-32">
+              <span className="text-sm font-medium text-gray-600">
+                ALT (IU/L)
+              </span>
+            </div>
+            <input
+              type="number"
+              name="alt"
+              value={formData.alt}
+              ref={useALTRef}
+              onChange={handleInputChange}
+              placeholder="ALT"
+              className="!flex-1 p-2 border border-gray-400  rounded-lg focus:ring-2 focus:ring-blue-300 focus:border-blue-500 transition-all"
+            />
+          </div>
         </div>
 
-        <div className="text-center text-lg font-medium text-gray-700 mb-4">
+        <div className="text-center text-lg font-medium text-[#1A3394] mb-4">
           Formula Visualization
         </div>
         <div className="flex items-center justify-center text-xl bg-white p-4 rounded-lg shadow-sm">
@@ -188,8 +187,8 @@ const FibCalculator = () => {
 
       <button
         onClick={calculateFibScore}
-        className="mt-6 w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-3 px-6 rounded-lg 
-        hover:from-blue-600 hover:to-blue-700 transform hover:scale-[1.02] transition-all duration-200 
+        className="w-full bg-[#7CCC52]  text-white py-3 px-6 rounded-lg 
+    
         font-medium shadow-md"
       >
         Calculate FIB-4 Score
@@ -218,21 +217,21 @@ const FibCalculator = () => {
 
           <div className="bg-white p-4 rounded-xl border text-center border-gray-100 shadow-md">
             {riskCategory === "High Risk" && (
-              <div className="flex items-center space-x-3 text-red-500 font-bold  animate-pulse">
+              <div className="flex items-center space-x-3 text-red-500 font-bold  ">
                 <p className="text-md text-center font-bold">
                   This FIB-4 score is categorized as high risk*
                 </p>
               </div>
             )}
             {riskCategory === "Low Risk" && (
-              <div className="flex items-center space-x-3 text-green-700  animate-pulse">
+              <div className="flex items-center space-x-3 text-green-700  ">
                 <p className="text-md text-center font-bold">
                   This FIB-4 score is categorized as low risk*
                 </p>
               </div>
             )}
             {riskCategory === "Indeterminate Risk" && (
-              <div className="flex items-center space-x-3 text-yellow-500  animate-pulse">
+              <div className="flex items-center space-x-3 text-yellow-500  ">
                 <p className="text-md text-center font-bold">
                   This FIB-4 score is categorized as indeterminate risk*
                 </p>
