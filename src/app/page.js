@@ -63,7 +63,7 @@ const FibCalculator = () => {
       </h1>
 
       <div className="mb-8 p-4 bg-gradient-to-br from-blue-50 to-gray-50 rounded-xl border border-gray-100">
-        <p className="text-lg font-normal mb-3 text-[#1A3394]">
+        <p className="text-lg font-semibold mb-3 text-[#1A3394]">
           Input Parameters:
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -134,7 +134,7 @@ const FibCalculator = () => {
           </div>
         </div>
 
-        <div className="text-center text-lg font-medium text-[#1A3394] mb-4">
+        <div className="text-center text-lg font-semibold text-[#1A3394] mb-4">
           Formula Visualization
         </div>
         <div className="flex items-center justify-center text-xl bg-white p-4 rounded-lg shadow-sm">
@@ -198,7 +198,7 @@ const FibCalculator = () => {
         <div className="mt-10 space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-gradient-to-br from-indigo-50 to-white p-6 rounded-xl border border-indigo-100">
-              <p className="text-sm text-indigo-600 mb-2">FIB-4 Score</p>
+              <p className="text-sm text-[#1A3394] mb-2">FIB-4 Score</p>
               <p className="text-3xl font-bold text-gray-800">{result}</p>
             </div>
             <div
