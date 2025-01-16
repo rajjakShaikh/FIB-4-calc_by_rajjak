@@ -7,18 +7,20 @@ const FibCalculator = () => {
     ast: "",
     alt: "",
     platelets: "",
+    plateletUnit: "10^9/L",
   });
   const [result, setResult] = useState(null);
   const [riskCategory, setRiskCategory] = useState("");
-  const useAgeRef = useRef("");
-  const useASTRef = useRef("");
-  const useALTRef = useRef("");
-  const usePlateletsRef = useRef("");
+
+  const inputRefs = {
+    age: useRef(null),
+    ast: useRef(null),
+    alt: useRef(null),
+    platelets: useRef(null),
+  };
 
   useEffect(() => {
-    useAgeRef.current.focus();
-    useASTRef.current.valueOf = "";
-    usePlateletsRef.current.valueOf = "";
+    inputRefs.age.current?.focus();
   }, []);
 
   const handleInputChange = (e) => {
@@ -26,22 +28,52 @@ const FibCalculator = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const calculateFibScore = () => {
-    const { age, ast, alt, platelets } = formData;
+  const handleUnitChange = (e) => {
+    setFormData({ ...formData, plateletUnit: e.target.value });
+  };
 
-    // Convert inputs to numbers and validate
+  // const convertPlatelets = (platelets, unit) => {
+  //   const plateletsNum = parseFloat(platelets);
+  //   if (isNaN(plateletsNum)) return null;
+
+  //   switch (unit) {
+  //     case "10^3/μL":
+  //       return plateletsNum;
+  //     case "/μL":
+  //       return plateletsNum * 1000; // Convert to 10^3/μL
+  //     default:
+  //       return plateletsNum * 1000; // Convert 10^9/L to 10^3/μL
+  //   }
+  // };
+
+  const convertPlatelets = (platelets, unit) => {
+    const plateletsNum = parseFloat(platelets);
+    if (isNaN(plateletsNum)) return null;
+
+    switch (unit) {
+      case "10^9/L": // Base unit - no conversion needed
+        return plateletsNum;
+      case "10^3/μL": // Conversion factor is 1
+        return plateletsNum;
+      case "/μL": // Conversion factor is 10^-3
+        return plateletsNum * 0.001;
+      default:
+        return plateletsNum;
+    }
+  };
+
+  const calculateFibScore = () => {
+    const { age, ast, alt, platelets, plateletUnit } = formData;
     const ageNum = parseFloat(age);
     const astNum = parseFloat(ast);
     const altNum = parseFloat(alt);
-    const plateletsNum = parseFloat(platelets);
+    const plateletsNum = convertPlatelets(platelets, plateletUnit);
 
-    // Validate inputs
     if (!ageNum || !astNum || !altNum || !plateletsNum) {
       alert("Please fill in all values");
       return;
     }
 
-    // Correct FIB-4 formula: (Age × AST) / (Platelets × √ALT)
     const fib4 = (ageNum * astNum) / (plateletsNum * Math.sqrt(altNum));
 
     let category = "";
@@ -57,7 +89,7 @@ const FibCalculator = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-5 sm:mx-auto p-6 my-5 shadow-lg  bg-white border border-[#7CCC52] rounded-xl">
+    <div className="max-w-2xl mx-5 sm:mx-auto p-6 my-5 shadow-lg bg-white border border-[#7CCC52] rounded-xl">
       <h1 className="text-[22px] sm:text-3xl font-bold text-center mb-6 text-[#1A3394]">
         FIB-4 Score and Liver Fibrosis
       </h1>
@@ -66,120 +98,49 @@ const FibCalculator = () => {
         <p className="text-lg font-semibold mb-3 text-[#1A3394]">
           Input Parameters:
         </p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-          <div className="flex items-center gap-3">
-            <div className="w-32">
-              <span className="text-sm font-medium text-gray-600">
-                Age (years)
+        <div className="grid grid-cols-1 text-sm md:grid-cols-2 gap-6 mb-6">
+          {[
+            { label: "Age (years)", name: "age" },
+            { label: "AST (IU/L)", name: "ast" },
+            { label: "ALT (IU/L)", name: "alt" },
+          ].map(({ label, name }) => (
+            <div key={name} className="grid md:flex items-center gap-3">
+              <span className="w-32 text-sm font-medium text-gray-600">
+                {label}
               </span>
-            </div>
-            <input
-              type="number"
-              name="age"
-              value={formData.age}
-              onChange={handleInputChange}
-              ref={useAgeRef}
-              placeholder="Age"
-              className="flex-1 p-2  border border-gray-400 rounded-lg focus:ring-2 focus:ring-blue-300 focus:border-blue-500 transition-all"
-            />
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="w-32">
-              <span className="text-sm font-medium text-gray-600">
-                AST (IU/L)
-              </span>
-            </div>
-            <input
-              type="number"
-              name="ast"
-              value={formData.ast}
-              onChange={handleInputChange}
-              ref={useASTRef}
-              placeholder="AST"
-              className="flex-1 p-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-blue-300 focus:border-blue-500 transition-all"
-            />
-          </div>
-
-          <div className="flex items-center gap-3">
-            <div className="w-32">
-              <span className="text-sm font-medium text-gray-600">
-                PLT (10⁹/L)
-              </span>
-            </div>
-            <input
-              type="number"
-              name="platelets"
-              value={formData.platelets}
-              ref={usePlateletsRef}
-              onChange={handleInputChange}
-              placeholder="Platelets"
-              className="flex-1 p-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-blue-300 focus:border-blue-500 transition-all"
-            />
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="w-32">
-              <span className="text-sm font-medium text-gray-600">
-                ALT (IU/L)
-              </span>
-            </div>
-            <input
-              type="number"
-              name="alt"
-              value={formData.alt}
-              ref={useALTRef}
-              onChange={handleInputChange}
-              placeholder="ALT"
-              className="!flex-1 p-2 border border-gray-400  rounded-lg focus:ring-2 focus:ring-blue-300 focus:border-blue-500 transition-all"
-            />
-          </div>
-        </div>
-
-        <div className="text-center text-lg font-semibold text-[#1A3394] mb-4">
-          Formula Visualization
-        </div>
-        <div className="flex items-center justify-center text-xl bg-white p-4 rounded-lg shadow-sm">
-          <div className="border-b-2 border-black text-center">
-            <div className="flex items-center gap-2">
               <input
                 type="number"
-                name="age"
-                value={formData.age}
+                name={name}
+                value={formData[name]}
                 onChange={handleInputChange}
-                placeholder="Age"
-                className="w-10 md:w-16 text-[13px] md:text-[16px] p-1  border rounded text-center"
-              />
-              <span>×</span>
-              <input
-                type="number"
-                name="ast"
-                value={formData.ast}
-                onChange={handleInputChange}
-                placeholder="AST"
-                className="w-10 md:w-16 p-1 text-[13px] md:text-[16px] border rounded text-center"
+                ref={inputRefs[name]}
+                placeholder={label}
+                className="flex-1 text-sm p-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-blue-300 focus:border-blue-500 transition-all"
               />
             </div>
-          </div>
-          <div className="mx-2">/</div>
-          <div className="border-b-2 border-black text-center">
-            <div className="flex items-center gap-2">
+          ))}
+          <div className="grid md:flex items-center gap-3">
+            <span className="w-32 text-sm font-medium text-gray-600">
+              Platelets
+            </span>
+            <div className="grid ml-0 md:ml-3 grid-cols-2 gap-2">
               <input
                 type="number"
                 name="platelets"
                 value={formData.platelets}
                 onChange={handleInputChange}
-                placeholder="PLT"
-                className="w-10 md:w-16 text-[13px] md:text-[16px] p-1 border rounded text-center"
+                placeholder="Platelets"
+                className="flex-1 p-2  border border-gray-400 rounded-lg focus:ring-2 focus:ring-blue-300 focus:border-blue-500 transition-all"
               />
-              <span>×</span>
-              <span>√</span>
-              <input
-                type="number"
-                name="alt"
-                value={formData.alt}
-                onChange={handleInputChange}
-                placeholder="ALT"
-                className="w-12 md:w-16 p-1 text-[13px] md:text-[16px] border rounded text-center"
-              />
+              <select
+                value={formData.plateletUnit}
+                onChange={handleUnitChange}
+                className="w-24 p-2 border mr-2 border-gray-400 rounded-lg focus:ring-2 focus:ring-blue-300 focus:border-blue-500"
+              >
+                <option value="10^9/L">10⁹/L</option>
+                <option value="10^3/μL">10³/μL</option>
+                <option value="/μL">/μL</option>
+              </select>
             </div>
           </div>
         </div>
@@ -187,9 +148,7 @@ const FibCalculator = () => {
 
       <button
         onClick={calculateFibScore}
-        className="w-full bg-[#7CCC52]  text-white py-3 px-6 rounded-lg 
-    
-        font-medium shadow-md"
+        className="w-full bg-[#7CCC52] text-white py-3 px-6 rounded-lg font-medium shadow-md"
       >
         Calculate FIB-4 Score
       </button>
@@ -203,63 +162,48 @@ const FibCalculator = () => {
             </div>
             <div
               className={`p-6 rounded-xl border ${
-                riskCategory === "Low Risk"
-                  ? "bg-gradient-to-br from-green-50 to-white border-green-100"
-                  : riskCategory === "High Risk"
-                  ? "bg-gradient-to-br from-red-50 to-white border-red-100"
-                  : "bg-gradient-to-br from-yellow-50 to-white border-yellow-100"
+                riskCategory.includes("Low")
+                  ? "border-green-100"
+                  : riskCategory.includes("High")
+                  ? "border-red-100"
+                  : "border-yellow-100"
               }`}
             >
               <p className="text-sm text-gray-600 mb-2">Risk Category</p>
               <p className="text-3xl font-bold">{riskCategory}</p>
             </div>
           </div>
-
-          <div className="bg-white p-4 rounded-xl border text-center border-gray-100 shadow-md">
-            {riskCategory === "High Risk" && (
-              <div className="flex items-center space-x-3 text-red-500 font-bold  ">
-                <p className="text-md text-center font-bold">
-                  This FIB-4 score is categorized as high risk*
-                </p>
-              </div>
-            )}
-            {riskCategory === "Low Risk" && (
-              <div className="flex items-center space-x-3 text-green-700  ">
-                <p className="text-md text-center font-bold">
-                  This FIB-4 score is categorized as low risk*
-                </p>
-              </div>
-            )}
-            {riskCategory === "Indeterminate Risk" && (
-              <div className="flex items-center space-x-3 text-yellow-500  ">
-                <p className="text-md text-center font-bold">
-                  This FIB-4 score is categorized as indeterminate risk*
-                </p>
-              </div>
-            )}
-          </div>
-
-          {/* Risk Categories */}
-          <div className="grid grid-cols-1 md:grid-cols-3 sm:grid-cols-1 gap-4 mt-6">
-            <div className="p-4 rounded-xl bg-gradient-to-br from-green-50 to-white border border-green-100">
-              <p className="text-green-800 font-medium">{"<"} 1.3</p>
-              <p className="text-sm text-green-600">Low Risk</p>
+        </div>
+      )}
+      {riskCategory && (
+        <div className="bg-white p-4 my-4 rounded-xl border text-center border-gray-100 shadow-md">
+          {riskCategory === "High Risk" && (
+            <div className="flex items-center space-x-3 text-red-500 font-bold  ">
+              <p className="text-md text-center font-bold">
+                This FIB-4 score is categorized as high risk for liver fibrosis.
+              </p>
             </div>
-            <div className="p-4 rounded-xl bg-gradient-to-br from-yellow-50 to-white border border-yellow-100">
-              <p className="text-yellow-800 font-medium">1.3 - 2.67</p>
-              <p className="text-sm text-yellow-600">Indeterminate</p>
+          )}
+          {riskCategory === "Low Risk" && (
+            <div className="flex items-center space-x-3 text-green-700">
+              <p className="text-md text-center font-bold">
+                This FIB-4 score is categorized as low risk for liver fibrosis.
+              </p>
             </div>
-            <div className="p-4 rounded-xl bg-gradient-to-br from-red-50 to-white border border-red-100">
-              <p className="text-red-800 font-medium">{">"} 2.67</p>
-              <p className="text-sm text-red-600">High Risk</p>
+          )}
+          {riskCategory === "Indeterminate Risk" && (
+            <div className="flex items-center space-x-3 text-yellow-500">
+              <p className="text-md text-center font-bold">
+                This FIB-4 score is categorized as indeterminate risk for liver
+              </p>
             </div>
-          </div>
+          )}
         </div>
       )}
 
       <p className="mt-6 text-sm text-gray-500 text-center italic">
         This tool is intended to assist healthcare professionals and is not a
-        substitute for clinical judgment.
+        substitute for clinical judgment.*
       </p>
     </div>
   );
