@@ -201,6 +201,22 @@ const FibCalculator = () => {
         </div>
       )}
 
+      {/* Risk Categories */}
+      <div className="grid grid-cols-1 md:grid-cols-3 sm:grid-cols-1 gap-4 mt-6">
+        <div className="p-4 rounded-xl bg-gradient-to-br from-green-50 to-white border border-green-100">
+          <p className="text-green-800 font-medium">{"<"} 1.3</p>
+          <p className="text-sm text-green-600">Low Risk</p>
+        </div>
+        <div className="p-4 rounded-xl bg-gradient-to-br from-yellow-50 to-white border border-yellow-100">
+          <p className="text-yellow-800 font-medium">1.3 - 2.67</p>
+          <p className="text-sm text-yellow-600">Indeterminate</p>
+        </div>
+        <div className="p-4 rounded-xl bg-gradient-to-br from-red-50 to-white border border-red-100">
+          <p className="text-red-800 font-medium">{">"} 2.67</p>
+          <p className="text-sm text-red-600">High Risk</p>
+        </div>
+      </div>
+
       <p className="mt-6 text-sm text-gray-500 text-center italic">
         This tool is intended to assist healthcare professionals and is not a
         substitute for clinical judgment.*
