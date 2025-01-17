@@ -180,21 +180,23 @@ const FibCalculator = () => {
           {riskCategory === "High Risk" && (
             <div className="flex items-center space-x-3 text-red-500 font-bold  ">
               <p className="text-md text-center font-bold">
-                This FIB-4 score is categorized as high risk for liver fibrosis.
+                This FIB-4 score is categorized as high risk for liver
+                fibrosis.*
               </p>
             </div>
           )}
           {riskCategory === "Low Risk" && (
             <div className="flex items-center space-x-3 text-green-700">
               <p className="text-md text-center font-bold">
-                This FIB-4 score is categorized as low risk for liver fibrosis.
+                This FIB-4 score is categorized as low risk for liver fibrosis.*
               </p>
             </div>
           )}
           {riskCategory === "Indeterminate Risk" && (
             <div className="flex items-center space-x-3 text-yellow-500">
               <p className="text-md text-center font-bold">
-                This FIB-4 score is categorized as indeterminate risk for liver
+                This FIB-4 score is categorized as indeterminate risk for
+                liver.*
               </p>
             </div>
           )}
@@ -219,8 +221,8 @@ const FibCalculator = () => {
       )}
 
       <p className="mt-6 text-sm text-gray-500 text-center italic">
-        This tool is intended to assist healthcare professionals and is not a
-        substitute for clinical judgment.*
+        *This tool is intended to assist healthcare professionals and is not a
+        substitute for clinical judgment.
       </p>
     </div>
   );
